@@ -100,12 +100,32 @@
     .branch h3 { font-size: 1.15rem; margin-bottom: 6px; }
     .branch .addr { color: var(--muted); font-size: .98rem; line-height: 1.4; }
     .branch .hours { color: var(--muted); font-size: .9rem; margin-top: 4px; }
-    .map {
-      width: 100%; height: 190px;
-      border: 0; border-radius: 16px;
+    .photo {
+      position: relative;
+      display: block;
       margin-top: 14px;
+      border-radius: 16px;
+      overflow: hidden;
       background: #1e2757;
+      -webkit-tap-highlight-color: transparent;
     }
+    .photo img {
+      display: block;
+      width: 100%; height: 210px;
+      object-fit: cover;
+      transition: transform .2s ease;
+    }
+    .photo:active img { transform: scale(.98); }
+    .photo-tag {
+      position: absolute; left: 10px; bottom: 10px;
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.95);
+      color: var(--btn);
+      font-size: .88rem; font-weight: 700;
+    }
+    .photo-tag svg { width: 16px; height: 16px; }
     .row { display: grid; grid-template-columns: 1fr; gap: 0; }
     .row .btn { white-space: nowrap; }
     .btn.call { background: #ffffff; color: var(--btn); }
@@ -161,7 +181,8 @@
           direccion: "",
           horario: "",
           telefono: "526144329129",
-          mapaEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d206.93003574171925!2d-106.07945241280109!3d28.61719824669938!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x86ea5cafe071ed33%3A0xc62e9a847d4959d2!2sTamales%20Paquim%C3%A9!5e1!3m2!1sen!2smx!4v1792422891438!5m2!1sen!2smx",
+          foto: "ramirez.webp",
+          fotoPosicion: "center 18%",   // qué parte de la foto se ve en el recuadro
           mapaLink: "https://maps.google.com/?cid=14280521362266741202"
         },
         {
@@ -169,7 +190,8 @@
           direccion: "",
           horario: "",
           telefono: "526144245056",
-          mapaEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d206.83685147897788!2d-106.07613852520065!3d28.6644517!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x86ea43f629cd7e4d%3A0xa1b0691fd024e255!2sTamales%20Paquim%C3%A9!5e1!3m2!1sen!2smx!4v1792422953936!5m2!1sen!2smx",
+          foto: "heroico.webp",
+          fotoPosicion: "35% center",
           mapaLink: "https://maps.google.com/?cid=11650927821364453973"
         }
       ]
@@ -217,8 +239,11 @@
           <h3>${esc(s.nombre)}</h3>
           ${s.direccion ? `<p class="addr">${esc(s.direccion)}</p>` : ""}
           ${s.horario ? `<p class="hours">🕒 ${esc(s.horario)}</p>` : ""}
-          <iframe class="map" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen
-                  title="Mapa ${esc(s.nombre)}" src="${esc(s.mapaEmbed || mapsEmbed(s.direccion))}"></iframe>
+          <a class="photo" href="${esc(s.mapaLink || mapsLink(s.direccion))}" target="_blank" rel="noopener">
+            <img src="${esc(s.foto)}" alt="Fachada ${esc(s.nombre)}" loading="lazy"
+                 style="object-position: ${esc(s.fotoPosicion || "center")}">
+            <span class="photo-tag">${ICON.map} Ver en Google Maps</span>
+          </a>
           <div class="row">
             <a class="btn" href="${esc(s.mapaLink || mapsLink(s.direccion))}" target="_blank" rel="noopener">${ICON.map} Cómo llegar</a>
             <a class="btn call" href="${esc(telLink(s.telefono))}">${ICON.phone} Llamar ${esc(prettyPhone(s.telefono))}</a>
