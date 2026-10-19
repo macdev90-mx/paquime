@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Tamales Paquimé</title>
+  <meta name="description" content="Orgullosos de Chihuahua, ¡tamales tradicionales y oaxaqueños! Sucursales, teléfonos y WhatsApp.">
+  <meta name="theme-color" content="#2a3570">
+  <meta property="og:title" content="Tamales Paquimé">
+  <meta property="og:description" content="Orgullosos de Chihuahua, ¡tamales tradicionales y oaxaqueños!">
+  <meta property="og:image" content="logo.png">
+  <link rel="icon" href="logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #2a3570;
+      --card: #3a4a9c;
+      --btn: #26306a;
+      --btn-hover: #1e2757;
+      --text: #ffffff;
+      --muted: #d7dcf5;
+      --red: #e0263a;
+      --whatsapp: #25d366;
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: "DM Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 16px 16px calc(96px + env(safe-area-inset-bottom));
+    }
+    .card {
+      max-width: 560px;
+      margin: 0 auto;
+      background: var(--card);
+      border-radius: 28px;
+      padding: 28px 20px 32px;
+      text-align: center;
+    }
+
+    /* Encabezado */
+    h1 { line-height: 0; }
+    .logo {
+      width: 100%;
+      max-width: 300px;
+      height: auto;
+      margin: 4px auto 6px;
+      display: block;
+      filter: drop-shadow(0 6px 14px rgba(0,0,0,.3));
+    }
+    .bio {
+      margin: 10px auto 0;
+      max-width: 340px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    /* Iconos sociales */
+    .socials { display: flex; justify-content: center; gap: 18px; margin: 18px 0 26px; }
+    .socials a { color: #fff; display: inline-flex; }
+    .socials svg { width: 40px; height: 40px; }
+
+    /* Botones */
+    .btn {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%;
+      min-height: 58px;
+      padding: 14px 18px;
+      margin-top: 12px;
+      border-radius: 999px;
+      background: var(--btn);
+      color: var(--text);
+      font: inherit; font-size: 1.05rem; font-weight: 700;
+      text-decoration: none;
+      transition: transform .12s ease, background .12s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn:hover { background: var(--btn-hover); }
+    .btn:active { transform: scale(.97); }
+    .btn svg { width: 24px; height: 24px; flex-shrink: 0; }
+    .btn.facebook { background: #1877f2; }
+    .btn.whatsapp { background: var(--whatsapp); color: #08361b; }
+
+    /* Sucursales */
+    h2 { font-size: 1.25rem; margin: 34px 0 4px; }
+    .branch {
+      background: rgba(0,0,0,.14);
+      border-radius: var(--radius);
+      padding: 18px 16px 16px;
+      margin-top: 16px;
+      text-align: left;
+    }
+    .branch h3 { font-size: 1.15rem; margin-bottom: 6px; }
+    .branch .addr { color: var(--muted); font-size: .98rem; line-height: 1.4; }
+    .branch .hours { color: var(--muted); font-size: .9rem; margin-top: 4px; }
+    .map {
+      width: 100%; height: 190px;
+      border: 0; border-radius: 16px;
+      margin-top: 14px;
+      background: #1e2757;
+    }
+    .row { display: grid; grid-template-columns: 1fr; gap: 0; }
+    .row .btn { white-space: nowrap; }
+    .btn.call { background: #ffffff; color: var(--btn); }
+    @media (min-width: 480px) {
+      .row { grid-template-columns: 1fr 1fr; gap: 10px; }
+    }
+
+    footer { margin-top: 30px; font-size: .85rem; color: var(--muted); }
+
+    /* Botón flotante de WhatsApp */
+    .wa-float {
+      position: fixed;
+      right: 18px;
+      bottom: calc(18px + env(safe-area-inset-bottom));
+      width: 62px; height: 62px;
+      border-radius: 50%;
+      background: var(--whatsapp);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 6px 18px rgba(0,0,0,.35);
+      z-index: 10;
+    }
+    .wa-float svg { width: 34px; height: 34px; color: #fff; }
+  </style>
+</head>
+<body>
+
+  <main class="card" id="app"></main>
+
+  <a class="wa-float" id="wa-float" aria-label="Escríbenos por WhatsApp" target="_blank" rel="noopener"></a>
+
+  <script>
+    /* =========================================================
+       EDITA AQUÍ LOS DATOS DEL NEGOCIO
+       - Teléfonos: escríbelos con lada de país, solo números.
+         México = 52  → ejemplo "526141234567"
+       ========================================================= */
+    const CONFIG = {
+      nombre: "Tamales Paquimé",
+      bio: "🌽 Orgullosos de Chihuahua, ¡tamales tradicionales y oaxaqueños! 🌿",
+      logo: "logo.png",   // sube tu logo con este nombre al repositorio
+
+      facebook: "https://www.facebook.com/Tamales.PaquimeCUU",
+
+      whatsapp: {
+        numero: "526141505534",
+        mensaje: "¡Hola! Quiero información sobre sus tamales 🫔"
+      },
+
+      // direccion y horario son opcionales; si se dejan vacíos no se muestran
+      sucursales: [
+        {
+          nombre: "Sucursal Ramírez",
+          direccion: "",
+          horario: "",
+          telefono: "526144329129",
+          mapaEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d206.93003574171925!2d-106.07945241280109!3d28.61719824669938!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x86ea5cafe071ed33%3A0xc62e9a847d4959d2!2sTamales%20Paquim%C3%A9!5e1!3m2!1sen!2smx!4v1792422891438!5m2!1sen!2smx",
+          mapaLink: "https://maps.google.com/?cid=14280521362266741202"
+        },
+        {
+          nombre: "Sucursal Heroico",
+          direccion: "",
+          horario: "",
+          telefono: "526144245056",
+          mapaEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d206.83685147897788!2d-106.07613852520065!3d28.6644517!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x86ea43f629cd7e4d%3A0xa1b0691fd024e255!2sTamales%20Paquim%C3%A9!5e1!3m2!1sen!2smx!4v1792422953936!5m2!1sen!2smx",
+          mapaLink: "https://maps.google.com/?cid=11650927821364453973"
+        }
+      ]
+    };
+
+    /* ======== No necesitas editar debajo de esta línea ======== */
+
+    const ICON = {
+      facebook: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.5c-1.5 0-1.96.93-1.96 1.89v2.26h3.32l-.53 3.5h-2.8V24C19.62 23.1 24 18.1 24 12.07z"/></svg>',
+      whatsapp: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35zM12.05 21.5h-.01a9.4 9.4 0 0 1-4.79-1.31l-.34-.2-3.56.93.95-3.47-.22-.36a9.38 9.38 0 0 1-1.44-5c0-5.19 4.23-9.42 9.43-9.42 2.52 0 4.88.98 6.66 2.76a9.36 9.36 0 0 1 2.76 6.67c0 5.2-4.23 9.42-9.43 9.42zm8.02-17.44A11.27 11.27 0 0 0 12.05.75C5.8.75.7 5.84.7 12.1c0 2 .52 3.95 1.52 5.67L.6 23.65l6.02-1.58a11.33 11.33 0 0 0 5.42 1.38h.01c6.25 0 11.35-5.09 11.35-11.35 0-3.03-1.18-5.88-3.33-8.03z"/></svg>',
+      phone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>',
+      map: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>'
+    };
+
+    const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+    // "526141234567" -> "614 123 4567"
+    const prettyPhone = n => {
+      const d = n.replace(/\D/g, "").replace(/^52/, "");
+      return d.length === 10 ? `${d.slice(0,3)} ${d.slice(3,6)} ${d.slice(6)}` : d;
+    };
+    const telLink = n => "tel:+" + n.replace(/\D/g, "");
+    const waLink = (n, msg) => `https://wa.me/${n.replace(/\D/g, "")}?text=${encodeURIComponent(msg || "")}`;
+    const mapsLink = addr => "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(addr);
+    const mapsEmbed = addr => "https://www.google.com/maps?q=" + encodeURIComponent(addr) + "&output=embed";
+
+    const c = CONFIG;
+    const wa = waLink(c.whatsapp.numero, c.whatsapp.mensaje);
+
+    document.getElementById("app").innerHTML = `
+      <h1><img class="logo" src="${esc(c.logo)}" alt="${esc(c.nombre)}"></h1>
+      <p class="bio">${esc(c.bio)}</p>
+
+      <div class="socials">
+        <a href="${esc(c.facebook)}" target="_blank" rel="noopener" aria-label="Facebook">${ICON.facebook}</a>
+        <a href="${esc(wa)}" target="_blank" rel="noopener" aria-label="WhatsApp">${ICON.whatsapp}</a>
+      </div>
+
+      <a class="btn whatsapp" href="${esc(wa)}" target="_blank" rel="noopener">${ICON.whatsapp} Contáctanos por WhatsApp</a>
+      <a class="btn facebook" href="${esc(c.facebook)}" target="_blank" rel="noopener">${ICON.facebook} Síguenos en Facebook</a>
+
+      <h2>Nuestras sucursales</h2>
+      ${c.sucursales.map(s => `
+        <section class="branch">
+          <h3>${esc(s.nombre)}</h3>
+          ${s.direccion ? `<p class="addr">${esc(s.direccion)}</p>` : ""}
+          ${s.horario ? `<p class="hours">🕒 ${esc(s.horario)}</p>` : ""}
+          <iframe class="map" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen
+                  title="Mapa ${esc(s.nombre)}" src="${esc(s.mapaEmbed || mapsEmbed(s.direccion))}"></iframe>
+          <div class="row">
+            <a class="btn" href="${esc(s.mapaLink || mapsLink(s.direccion))}" target="_blank" rel="noopener">${ICON.map} Cómo llegar</a>
+            <a class="btn call" href="${esc(telLink(s.telefono))}">${ICON.phone} Llamar ${esc(prettyPhone(s.telefono))}</a>
+          </div>
+        </section>
+      `).join("")}
+
+      <footer>© ${new Date().getFullYear()} ${esc(c.nombre)}</footer>
+    `;
+
+    const f = document.getElementById("wa-float");
+    f.href = wa;
+    f.innerHTML = ICON.whatsapp;
+  </script>
+</body>
+</html>
